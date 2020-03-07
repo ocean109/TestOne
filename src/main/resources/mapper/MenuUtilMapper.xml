@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.com.mapper.MenuUtilMapper">
+  		<select id="selectMenuutil" resultType="com.example.demo.com.pojo.MenuUtil">
+  			SELECT * FROM menuutil where  menuNum = #{menuNum}
+  		</select>
+  		<!-- 
+  		//查找全部树结构
+	public List<MenuUtil> selectAll();
+  		 -->
+  		 <select id="selectAll" resultType="MenuUtil">
+  		 
+		SELECT * FROM menuutil
+  		 </select>
+  		
+</mapper>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.com.mapper.FreeInsMapper">
+<!-- 
+// 查询状态为1 的对应免险员工今天新增的客户数
+	public int selectBBB(int id);
+ -->
+ <select id="selectBBB" parameterType="int" resultType="int">
+ 	SELECT  count(*)  FROM freeins WHERE TO_DAYS(inputDate) = TO_DAYS(NOW()) and userId = #{id} 
+ </select>
+<!-- 
+// 查询状态为1 的对应免险员工的客户数
+	public int selectAAA(int id);
+ -->
+ <select id="selectAAA" parameterType="int"  resultType="int">
+ 	 select count(*) from freeins where status = 1 and userId = #{id} 
+ </select>
+<!-- 
+//分配的成功后修改此用户在免险表里面的状态为0 目的是不让 分配页面再显示此用户
+	public int updataStutas(int id);
+ -->
+ <update id="updataStutas" parameterType="int">
+ 	update freeins set status = 0 where id = #{id}
+ </update>
+<!-- 
+	//分页展示freeIns表中的信息
+	public List<FreeIns> selectFreeInsMapper(int start,int size);
+	//查询总页数
+	public int select();
+	//添加freeIns用户
+	public int addFreeIns(FreeIns freeIns); 
+		//根据id 删除freeIns用户
+	public int deleteFreeIns(int id);
+		//根据Id 查到FreeIns用户
+	public FreeIns SelectOneFreeIns(int id);
+	//根据Id 修改FreeIns用户信息
+	public int updateFreeIns(FreeIns freeIns);
+	//根据FreeIns的部分信息来查找 FreeIns
+	public List<FreeIns> selectListFreeIns(FreeIns freeIns);
+	//提交
+	public int upFreeIns(int id);
+ -->
+ <!-- 
+ //查询以及提交的免险用户
+	public List<FreeIns> selectFreeIns();
+  -->
+  <!-- 
+  ////保险确认页面的打回操作 打回给保险人员
+	public int updateStuta(int id);
+   -->
+   <update id="updateStuta">
+   		update from set status = 1 where id = #{id}
+   </update>
+  <!--
+//查询所有免险用户状态为3的数据 并分页
+	public List<FreeIns> selectStatus();
+	//查询所有免险用户状态为3的数据的总是
+	public int selectStatusCount();
+   -->
+   <select id="selectStatus" resultType="FreeIns">
+   	select * from freeins where status=3 limit #{start},#{size}
+   </select>
+   <select id="selectStatusCount" resultType="int">
+     select count(1) from freeins where status=3
+   </select>
+  <!-- 
+    //打回更改用户状态为未提交
+	public int updata(int id);
+   -->
+   <!-- 
+   //确定功能  状态从提交变为确认
+	public int updateStatus(int id);
+    -->
+    <update id="updateStatus" >
+	update freeIns set status = 3 where id = #{id}    	
+    </update>
+      <!-- 
+   	//查看提交的免险用户的总数
+	public int selectCount();
+    -->
+    
+    <select id="selectCount" resultType="int" >
+    	select count(1) from freeIns where status=2
+    </select>
+   <update id="updata">
+   		update freeIns set status = 1 where id =#{id}
+   </update>
+  <select id="selectFreeIns" resultType="FreeIns">
+  	 select * from freeIns where status=2 limit #{start},#{size}
+  </select>
+ 	<update id="upFreeIns">
+ 		update freeins set status = 2 where id=#{id}
+ 	</update>
+ 	
+ 	<select id="selectListFreeIns" parameterType="FreeIns" resultType="FreeIns">
+ 	select * from freeins 
+ 	<where>
+ 		<if test="customName !=null and customName != ''">
+ 			customName like "%"#{customName}"%"
+ 		</if>
+ 		<if test="customSex != null and customSex != ''">
+ 			and customSex = #{customSex}
+ 		</if>
+ 		<if test="customAge != null and customAge != ''">
+ 			and customAge = #{customAge}
+ 		</if>
+ 		<if test="addr != null and addr !=''">
+ 			and addr = #{addr}
+ 		</if>
+ 		<if test="phone != null and phone !=''">
+ 			and phone = #{phone}
+ 		</if>
+ 		<if test="status != null and status != ''">
+ 			and status = #{status}
+ 		</if>
+ 		<if test="userId != null and userId != ''">
+ 			and userId = #{userId}
+ 		</if>
+ 	</where>
+ 	</select>
+ 	
+ 	
+ 	
+ 	<select id="SelectOneFreeIns" resultType="FreeIns">
+ 		select * from freeins where id = #{id}
+ 		
+ 	</select>
+ 	<select id="selectFreeInsMapper" resultType="FreeIns">
+ 		select * from freeins where status=1 and userId = #{userId} limit #{start},#{size} 
+ 	</select>
+ 	<select id="select" resultType="int">
+ 		select count(*) from freeins where userId = #{userID}
+ 	</select>
+ 	<insert id="addFreeIns" parameterType="FreeIns">
+ 		insert into freeins(id,customName,customSex,customAge,addr,phone,status,userId,inputDate)
+ 		            values(null,#{customName},#{customSex},#{customAge},#{addr},#{phone},1,#{userId},#{inputDate})
+ 	</insert>
+ 	<delete id="deleteFreeIns">
+ 		delete from freeins where id = #{id}	
+ 	</delete>
+ 	<update id="updateFreeIns" parameterType="FreeIns">
+ 		update  freeins set customName = #{customName}, customSex= #{customSex},customAge=#{customAge},addr=#{addr},phone=#{phone},inputDate=#{inputDate}  
+ 		where id = #{id}
+ 	</update>
+  		 
+</mapper>

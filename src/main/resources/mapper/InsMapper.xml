@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.com.mapper.InsMapper">
+<!-- 
+////经理确认保险
+	public List<Ins> selectINS();
+ -->
+<select id="selectINS"  resultType="Ins">
+	select * from ins  where status = 5	
+</select>
+<!-- 
+//财务打回到经理
+	public int updataInsstatuss(int id);
+ -->
+ <update id="updataInsstatuss">
+ 		update ins set status = 5 where id = #{id}
+ </update>
+<!-- 
+//财务查看经理确认后的所有人的保险人信息
+	public List<Ins> selectInsAllzf();
+ -->
+ <select id="selectInsAllzf" resultType="Ins">
+ 		select * from ins where status = 5
+ </select>
+<!-- 
+	//财务确认付款
+	public int updataStatuszf(int id);
+ -->
+  <update id="updataStatuszf">
+ 		update ins set status = 6 where id = #{id}
+ </update>
+<!-- 
+//	//经理打回给保险人员   改变状态
+	public int updataInsStatus(int id);
+ -->
+ <update id="updataInsStatus">
+ 		update ins set status = 4 where id = #{id}
+ </update>
+<!--
+//经理确认后给财务   改变状态
+	public int status(int id);
+  -->
+  <update id="status">
+  	update ins set status = 6 where id = #{id}
+   </update>
+<!-- 
+//购买后提交给经理  改变状态
+	public int updataStatus(int id);
+ -->
+ <update id="updataStatus">
+ 	update ins set status = 5 where id = #{id}
+ </update>
+<!-- 
+////购买保险
+	public int updateProduct(int id1,int id2);
+ -->
+ <update id="updateProduct">
+ 	update ins set pid = #{id2} where id = #{id1}
+ </update>
+<!-- 
+//修改ins用户的信息
+	public int updataIns(Ins ins);
+ -->
+ <update id="updataIns" parameterType="Ins">
+	update ins set customName=#{customName},customSex=#{customSex},customAge= #{customAge},addr=#{addr},idcard=#{idcard},bankcard=#{phone},isMarry=#{isMarry},remark=#{remark} where id=#{id}	
+ </update>
+ 
+<!-- 
+//查询所有的保险用户
+	public List<Ins> selectInsAll();
+ -->
+ <select id="selectInsAll" resultType="Ins">
+	select * from ins where status = 4 and userId = #{userId}
+ </select>
+	<!-- 
+		//查询免险那员工的信息 id1   
+	public FreeIns selectFreeIns(@Param("id1")int id1);
+	//将查出来的免险信息存入保险用户的信息  
+	public int addInt(@Param("freeIns")FreeIns freeIns);
+	//改变保险用户的userId和status
+	public int updata(@Param("id2")int id2);
+	 -->
+	 <select id="selectFreeIns" resultType="FreeIns" parameterType="int">
+	 	select * from freeins where id = #{id1}
+	 </select>
+	 <insert id="addInt" parameterType="FreeIns">
+	 	insert into ins(id,customName,customSex,customAge,addr,phone,status,userId,inputDate,remark)
+	 	values(#{id},#{customName},#{customSex},#{customAge},#{addr},#{phone},#{status},#{userId},#{inputDate},#{remark})
+	 </insert>
+	 <update id="updata" >
+		update  ins set status=4 ,userId=#{id2}  where id = #{id1}	 	
+	 </update>
+</mapper>

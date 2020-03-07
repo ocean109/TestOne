@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.com.mapper.RoleMenuMapper">
+<!-- 
+//查出对应idd的树结构
+	public List<RoleMenu> selectIdd(@Param("idd")int idd);
+ -->
+ <select id="selectIdd" resultType="RoleMenu">
+		select * from rolemenu where rid = #{idd} 	
+ </select>
+<!-- 
+//存储对应的树结构
+public boolean insert(RoleMenuMapper roleMenu);
+ -->
+ 	<insert id="insert" >
+ 		insert into rolemenu(rid,menuNum) values(#{idd},#{string})
+ 	</insert>
+ 	<!-- 
+ 	//查看有没有对应id的树结构
+	public int select(@Param("idd")int idd);
+ 	 -->
+ 	 <select id="select" resultType="int">
+ 	 		select count(*) from rolemenu where rid = #{idd}
+ 	 </select>
+ 	 <!-- 
+ 	 	//删除对应id的树结构
+	public int delete(@Param("idd")int idd);
+ 	  -->
+ 	  <delete id="delete">
+ 	  	delete FROM rolemenu where rid = #{idd}
+ 	  </delete>
+</mapper>

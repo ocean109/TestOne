@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.com.mapper.UserMapper">
+<!-- 
+//查询所有的保险员工
+	public List<User> selectUserRole();
+ -->
+ <select id="selectUserRole" resultType="User">
+	select * from user where rid = 6 
+ </select>
+<!-- 
+//异步重置密码
+	public int uppwd (int id);
+ -->
+ <update id="uppwd">
+ 	update  user set pwd = 123456 where id = #{id}
+ </update>
+<!-- 
+//异步查询员工编号
+	public int selectid(int rid);
+ -->
+ <select id="selectid" resultType="int">
+ 	select count(*) from user where rid= #{rid}
+ </select>
+<!-- 
+//为删除
+	public int daletUser(int id);
+ -->
+ <update id="daletUser">
+	update user set isdel = 2 where id = #{id} 
+ </update>
+<!-- 
+//添加员工
+	public int adduser(@Param("user") User user);
+ -->
+ 	<insert id="adduser" parameterType="user">
+ 		insert into user(id,userName,pwd,rid,level,isdel,remark) 
+ 		value(null,#{userName},"123456",#{rid},#{level},1,#{remark});
+ 	</insert>
+	<!-- 
+	//判断是否有这个用户
+	public int selectUser();
+	 -->
+  		<select id="selectUser" parameterType="String" resultType="int">
+  			select count(*) from user where userName=#{userName} and isdel=1
+  		</select>
+  		<!-- 
+  		//查询所有用户
+	public List<User> selectUserAll();
+  		 -->
+  		 <select id="selectUserAll" resultType="com.example.demo.com.pojo.User">
+  		 	select * from user
+  		 </select>
+  		<!-- 
+	//修改密码啊啊啊 
+	public int updataUser(String userName,String pwd);
+  		 -->
+  		 <update id="updataUser">
+  		 update user set pwd = #{pwd} where userName=#{userName} and pwd = #{pwdj};
+  		 </update>
+  		 <!-- 
+  		 //判断登陆的账号 密码  级别
+	        public User selectU(@Param("user")User user);
+  		  -->
+  		  <select id="selectU"  resultType="User">
+         select * from user where userName= #{userName} and pwd = #{pwd}
+  		  </select>
+  		 
+</mapper>

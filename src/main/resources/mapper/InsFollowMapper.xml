@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.com.mapper.InsFollowMapper">
+<!--
+//添加回访记录
+	public int insertInsFollow(InsFollow insFollow);
+ -->
+ <insert id="insertInsFollow" parameterType="InsFollow">
+ 	insert into insfollow values(null,#{recordDate},#{recordText},#{nextDate},#{insId})
+ </insert>
+
+</mapper>
